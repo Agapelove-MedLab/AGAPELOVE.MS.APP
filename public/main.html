@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/Agapelove Logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="10"> -->
+    <link rel="stylesheet" href="/styles/indez.css">
+    <link rel="stylesheet" href="/styles/inventory.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>AGAPELOVE.MS.APP</title>
+</head>
+
+<body style="background-image: url('/images/R.gif');">
+    <div class="main-container">
+        <div class="pageContents">
+            <div class="logo">
+                <div class="logoImg">
+                    <img src="/images/Agapelove Logo.png" alt="logo" title="Click to see more">
+                </div>
+                <ul>
+                    <li><a id="reportAnalytics-btn">Reports & Analytics</a></li>
+                    <li class="resultDropdown">
+                        <a id="result-btn">Patients Data <i class="fas fa-caret-down"></i></a>
+                        <div class="result-dropdown-content">
+                            <input type="text" id="resultSearch" name="resultSearch" placeholder="Enter ID">
+                            <a href="#" data-role="patient-result">Patient Result</a>
+                            <a href="#" data-role="patient-history">Patient History</a>
+                            <a href="#" data-role="patient-report">Patient Report</a>
+                        </div>
+                    </li>
+                    <li><a id="research-btn">Research Data</a></li>
+                    <li id="task-btn" title="Check for tasks"><a title="Check for tasks">Tasks & ToDos</a></li>
+                    <li><a id="appointment-btn">Appointments</a></li>
+                    <li title="Admins only" id="staffRecord-btn"><a title="Admins only">Staff Management</a></li>
+                    <li id="chat-btn"><a>Chat</a>
+                        <div id="chat-button" class="chat-button">
+                            <i class="fas fa-comments"></i>
+                            <div id="notification-dot" class="notification-dot"></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="navBtn">
+                    <div class="openBtn1">
+                        <button onclick="document.getElementById('sampleModal').style.display='block'">Open Sample
+                            Tracker
+                            <i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    <div class="openBtn2">
+                        <button type="button" id="open-inventory-btn">Open Inventory Tracker <i
+                                class="fa fa-arrow-right"></i></button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mainHeader">
+                <div class="userProfileRight">
+                    <img id="profile-user-icon" onclick="toggleProfileMenu()" src="" alt="User Icon"><br>
+                    <!-- <span id="user-name"></span> -->
+                </div>
+                <div class="background-overlay">
+                    <h4>AGAPELOVE MEDICALS LIMITED</h4>
+                    <div class="welcomeSlogan">
+                        (SAVING LIVES BY THE GRACE OF GOD)
+                    </div>
+                </div>
+            </div>
+
+            <div class="welcomeSlogan">
+                Hi, Good morning or Good day..... <br>
+                Welcome to the Labs Management System <br>
+                How are you doing today, pls dont forget to login your role accordingly to enable you have access <br>
+                to your assigned duties in the system.
+            </div>
+
+
+
+            <!--LABORATORY SAMPLE MANAGEMENT -->
+
+            <div class="sampleModal" id="sampleModal">
+                <div class="sample-modal-content" id="sample-modal-content">
+                    <div class="sampleHeader">
+                        <div class="background-overlay">
+                            <span onclick="document.getElementById('sampleModal').style.display='none'"
+                                class="close">&times;</span>
+                            <h1>LABORATORY SAMPLE MANAGEMENT</h1>
+                            <div id="sampleNav">
+
+                                <button type="button" id="reset-filters">Reset</button>
+
+                                <div class="date-range">
+                                    <span>
+                                        <label for="start-date">Start:</label> <br>
+                                        <input type="date" id="start-date" name="start-date">
+                                    </span>
+
+                                    <span>
+                                        <label for="end-date">End:</label> <br>
+                                        <input type="date" id="end-date" name="end-date">
+                                    </span>
+
+                                    <span>
+                                        <label for="sample-search-filter">Search:</label> <br>
+                                        <input type="text" id="sample-search-filter"
+                                            placeholder="Search by ID/Owner/Referral" onkeyup="applySelectedFilter()">
+                                    </span>
+                                </div>
+
+
+                                <select title="Filter" id="filter-sample" onchange="applySampleFilters()">
+                                    <option class="options" value="">All Categories</option>
+                                    <option class="options" value="Medical">Processed</option>
+                                    <option class="options" value="Lab Equipment">Awaiting</option>
+                                    <option class="options" value="Consumables">Owing</option>
+                                    <option class="options" value="Chemicals">Confirmed</option>
+                                </select>
+
+                                <select id="sample-sort-option">
+                                    <option value="none">None</option>
+                                    <option value="name">Patients Name</option>
+                                    <option value="sex">Sex</option>
+                                    <option value="status">Status</option>
+                                </select>
+
+                                <button type="button" id="check-low-stock-btn">Check Low Stock</button>
+                                <div class="low-stock-alert"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottomNavBar">
+                        <ul>
+                            <li><button id="form-btn"
+                                    onclick="document.getElementById('regSampleModal').style.display='block'"><span
+                                        class="faStack">
+                                        <!-- <i class="fas fa-flask"></i> -->
+                                        <i class="fas fa-plus"></i>
+                                    </span></i></button></li>
+                            <li><button id="form-btn"
+                                    onclick="document.getElementById('resultSampleModal').style.display='block'"><i
+                                        class="fa fa-refresh" aria-hidden="true"></i></button></li>
+                            <li><button id="form-btn"
+                                    onclick="document.getElementById('balanceModal').style.display='block'"><i
+                                        class="fas fa-wallet" aria-hidden="true"></i></button></li>
+                        </ul>
+
+                        <div id="pagination-controls">
+                            <button class="toggle-button" id="prevButton" onclick="prevPage()"><i
+                                    class="fas fa-chevron-left"></i></button>
+                            <span id="pageInfo"></span>
+                            <button class="toggle-button" id="nextButton" onclick="nextPage()"><i
+                                    class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <table id="sample-table">
+                        <thead>
+                            <tr>
+                                <th class="fixed-col">S/N</th>
+                                <th>ID</th>
+                                <th>Sample Type</th>
+                                <th>Collection Date</th>
+                                <th>Patients Name</th>
+                                <th>Age</th>
+                                <th>Sex</th>
+                                <th>Test Type</th>
+                                <th>Email/Phone</th>
+                                <th>Status</th>
+                                <th>Referral</th>
+                                <th>Total Bill</th>
+                                <th>Amount Paid</th>
+                                <th>Balance</th>
+                                <th>FP Confirmed</th>
+                                <th>Test Result</th>
+                                <th>Result File</th>
+                                <th>Notes</th>
+                                <th>Report Date</th>
+                                <th>Registered By</th>
+                                <th>Updated By</th>
+                                <th>Payment Confirmed By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sample-table-body">
+                            <!-- sample details will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal" id="regSampleModal">
+                    <div class="reg-sample-modal">
+                        <div class="formHeader">
+                            <span onclick="document.getElementById('regSampleModal').style.display='none'"
+                                class="closes">&times;</span>
+                            <h1>Sample Registration</h1>
+                        </div>
+                        <form id="sampleForm" enctype="multipart/form-data" onsubmit="submitForm(); return false;">
+                            <!-- <span id="nextSampleId"></span> -->
+
+                            <label for="sampleType">Sample Type:</label>
+                            <input type="text" id="sampleType" name="sampleType" required>
+
+                            <label for="collectionDate">Collection Date:</label>
+                            <input type="datetime-local" id="collectionDate" name="collectionDate" required>
+
+                            <label for="owner">Patient Name:</label>
+                            <input type="text" id="owner" name="owner" required>
+
+                            <label for="age">Age:</label>
+                            <input type="text" id="age" name="age" required>
+
+                            <label for="sex">Sex:</label>
+                            <input type="text" id="sex" name="sex" required>
+
+                            <label for="testRun">Test Type:</label>
+                            <input type="text" id="testRun" name="testRun" readonly onclick="openTestRunModal()">
+
+                            <div id="testRunModal" class="modals">
+                                <div class="modals-content">
+                                    <span class="closes" onclick="closeTestRunModal()">&times;</span>
+                                    <h2>Select Tests</h2>
+                                    <div id="testCategories"></div>
+                                    <button type="button" onclick="applySelectedTests()">Apply</button>
+                                </div>
+                            </div>
+
+                            <label for="emailPhone">Email or Phone No:</label>
+                            <input type="text" id="emailPhone" name="emailPhone" required>
+
+                            <label for="referral">Referral:</label>
+                            <input type="text" id="referral" name="referral" required>
+
+                            <label for="totalBill">Total Bill:</label>
+                            <input type="text" id="totalBill" name="totalBill" readonly required>
+
+                            <label for="amountPaid">Amount Paid:</label>
+                            <input type="text" id="amountPaid" name="amountPaid" required>
+
+                            <label for="staffCode">Staff Code:</label>
+                            <input type="text" id="staffCode" name="staffCode" required>
+
+                            <div class="form-btns">
+                                <div class="form-btn">
+                                    <button type="button" onclick="submitForm()">Submit</button>
+                                </div>
+
+                                <div class="form-btn print-btn">
+                                    <button type="button" onclick="printInvoice()">Print Invoice</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- <div id="loadingIndicator">Loading...</div>
+                        <div id="modalContainer"></div> -->
+
+                    </div>
+                </div>
+
+                <!-- Update Sample Modal -->
+                <div class="modal" id="resultSampleModal">
+                    <div class="reg-sample-modal">
+                        <div class="formHeader">
+                            <span onclick="document.getElementById('resultSampleModal').style.display='none'"
+                                class="closes">&times;</span>
+                            <h1>Update Sample Result</h1>
+                        </div>
+                        <form id="updateForm" enctype="multipart/form-data">
+                            <label for="sampleId">Sample ID:</label>
+                            <input type="text" id="sampleId" name="sampleId" required>
+
+                            <label for="result">Result:</label>
+                            <input type="text" id="result" name="result" required>
+
+                            <label for="notes">Notes:</label>
+                            <input type="text" id="notes" name="notes">
+
+                            <label for="reportDate">Report Date:</label>
+                            <input type="datetime-local" id="reportDate" name="reportDate">
+                            <!-- 
+                            <label for="resultFile">Result File:</label>
+                            <input type="file" id="resultFile" name="resultFile"> -->
+
+                            <label for="staffCode">Staff Code:</label>
+                            <input type="text" id="updateStaffCode" name="staffCode" required>
+
+                            <div class="form-btn">
+                                <button type="button" onclick="submitUpdate()">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Confirm Balance Modal -->
+                <div class="modal" id="balanceModal">
+                    <div class="reg-sample-modal">
+                        <div class="formHeader">
+                            <span onclick="document.getElementById('balanceModal').style.display='none'"
+                                class="closes">&times;</span>
+                            <h1>Confirm Balance Payment</h1>
+                        </div>
+                        <form id="balanceForm">
+                            <label for="balanceSampleId">Sample ID:</label>
+                            <input type="text" id="balanceSampleId" name="sampleId" required>
+
+                            <label for="confirmationCode">Amount Paid:</label>
+                            <input type="text" id="amountPaid" name="amountPaid" required>
+
+                            <label for="confirmationCode">Payment Confirmed By</label>
+                            <input type="text" id="confirmationCode" name="confirmationCode" placeholder="Staff Code"
+                                required>
+
+                            <div class="form-btn">
+                                <button type="button" onclick="submitBalanceConfirmation()">Confirm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="loadingIndicator">Processing...</div>
+                <div id="successIndicator">Done</div>
+                <!-- to display total number of times a patient has visited or a referral has referred a sample -->
+                <div id="total-number-records"></div>
+                <div id="nextSampleId" title="to display success message"></div>
+
+                <div id="deleteModal" class="deleteModal">
+                    <div class="delete-modal-content">
+                        <p id="deleteModalText">Are you sure you want to delete this sample?</p>
+                        <div class="delete-modal-buttons">
+                            <button id="confirmDelete">Yes</button>
+                            <button id="cancelDelete">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Invoice Template -->
+            <div id="invoice">
+                <div class="logo-sign">
+                    <img src="images/Agapelove Logo.png" alt="Logo-image">
+                </div>
+                <h1>Invoice Receipt</h1>
+                <p>Sample ID: <span id="invoiceSampleId"></span></p>
+                <p>Sample Type: <span id="invoiceSampleType"></span></p>
+                <p>Collection Date: <span id="invoiceCollectionDate"></span></p>
+                <p>Patient Name: <span id="invoiceOwner"></span></p>
+                <p>Age: <span id="invoiceAge"></span></p>
+                <p>Sex: <span id="invoiceSex"></span></p>
+                <p>Test Run: <span id="invoiceTestRun"></span></p>
+                <p>Email or Phone No: <span id="invoiceEmailPhone"></span></p>
+                <p>Referral: <span id="invoiceReferral"></span></p>
+                <p>Total Bill: <span id="invoiceTotalBill"></span></p>
+                <p>Amount Paid: <span id="invoiceAmountPaid"></span></p>
+                <p>Balance: <span id="invoiceBalance"></span></p>
+                <p>Staff Code: <span id="invoiceStaffCode"></span></p>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- INVENTORY CATEGORY -->
+
+        <div id="inventory-overlay">
+            <div id="inventory-content">
+                <div class="sampleHeader">
+                    <div class="background-overlay">
+                        <span class="close"
+                            onclick="document.getElementById('inventory-overlay').style.display='none'">&times;</span>
+                        <h5 class="inv-hh1">Lab Inventory Management</h5>
+                        <div class="update-inventory-alert" id="update-inventory-alert"></div>
+                        <div id="fetch-history-alert"></div>
+                        <div id="nav">
+                            <button id="add-item-btn" class="restock-btn">Add</button>
+                            <!-- <label for="specific-item">Specific Item:</label> -->
+                            <input type="text" id="specific-item" placeholder="filter by item name"
+                                onkeyup="applyFilters()">
+                            <!-- <button type="button" onclick="applyFilters()" class="filter-btn">Filter</button> -->
+                            <select title="Filter" id="filter-category" onchange="applyFilters()">
+                                <option value="">All Categories</option>
+                                <option value="Medical">Medical</option>
+                                <option value="Lab Equipment">Equipment</option>
+                                <option value="Consumables">Consumables</option>
+                                <option value="Chemicals">Chemicals</option>
+                                <option value="Supplies">Supplies</option>
+                                <option value="Labware">Labware</option>
+                                <option value="Stationaries">Stationaries</option>
+                            </select>
+
+                            <!-- <button type="button" onclick="applySort()" class="sort-btn">Sort</button> -->
+                            <!-- <label for="sort-option">Sort By:</label> -->
+                            <select id="sort-option" onchange="applySort()">
+                                <option value="name">Name</option>
+                                <option value="quantity">Quantity</option>
+                                <option value="status">Status</option>
+                            </select>
+                            <button type="button" id="view-history-btn" class="view-history-btn">View History</button>
+                            <select title="History" id="history-action">
+                                <option value="restock">Restock</option>
+                                <option value="use">Use</option>
+                                <option value="damage">Damage</option>
+                            </select>
+                            <input type="text" id="history-item-name" placeholder="Specific Item (optional)">
+                            <input title="Start Date" type="date" id="history-start-date">
+                            <input title="End Date" type="date" id="history-end-date">
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottomNavBar inventoryBottomNav">
+                    <button id="restock-btn" class="restock-btn">Restock</button>
+                    <button id="use-item-btn" class="use-item-btn">Use</button>
+                    <button id="record-damage-btn" class="record-damage-btn">Damage</button>
+                </div>
+
+
+                <ul id="access-history">
+                    <!-- Access logs will be populated here -->
+                </ul>
+                <table id="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                            <th>Updated By</th>
+                            <th>Search Codes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-table-body">
+                        <!-- Inventory items will be populated here -->
+                    </tbody>
+                </table>
+
+                <div id="modal" class="modalInvt">
+                    <div class="modalInvt-content">
+                        <span id="modal-close-btn" class="close"
+                            onclick="document.getElementById('modal').style.display='none'">&times;</span>
+                        <h2 id="modal-title">Action</h2>
+                        <input type="hidden" id="modal-action">
+                        <input type="text" id="modal-item-name" placeholder="Item Name">
+                        <input type="number" id="modal-quantity" placeholder="Quantity">
+                        <!-- staff code for authorization to perform task or make changes -->
+                        <input type="text" id="modal-staff-code" placeholder="Staff Code">
+                        <div id="modal-alert"></div>
+                        <button id="modal-submit-btn">Submit</button>
+                    </div>
+                </div>
+                <div id="add-modal" class="modalInvt">
+                    <div class="modalInvt-content">
+                        <span id="add-modal-close-btn" class="close"
+                            onclick="document.getElementById('add-modal').style.display='none'">&times;</span>
+                        <h2 id="add-modal-title"></h2>
+                        <input type="hidden" id="add-modal-action">
+                        <input type="text" id="add-modal-item-name" placeholder="Item Name">
+                        <input type="text" id="add-modal-category" placeholder="Category">
+                        <input type="number" id="add-modal-quantity" placeholder="Quantity">
+                        <!-- staff code for authorization to perform task or make changes -->
+                        <input type="text" id="add-modal-staff-code" placeholder="Staff Code">
+                        <input type="text" id="searchCode" placeholder="Search Code">
+                        <div id="add-modal-alert"></div>
+                        <button id="add-modal-submit-btn">Submit</button>
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <table id="history-table">
+                    <hr class="section-divider">
+                    <h2>Inventory History</h2>
+                    <hr class="section-divider">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Staff Code</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <!-- History data will be rendered here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal structure for access authorization -->
+        <div id="auth-modal" class="modalInvt">
+            <div class="modalInvt-content">
+                <h2>Authorization Required</h2>
+                <input type="text" id="codeInput" placeholder="Enter Staff Code">
+                <p id="auth-message"></p>
+                <button id="auth-submit-btn">Submit</button>
+                <button id="auth-close-btn"
+                    onclick="document.getElementById('auth-modal').style.display='none'">Close</button>
+                <div id="auth-alert"></div> <!-- Alert message container -->
+            </div>
+        </div>
+        <!-- to show alert messages or responses respectively -->
+        <div class="low-stock-alert" id="low-stock-alert"></div>
+        <div class="fetch-history-alert" id="fetch-history-alert"></div>
+        <div class="fetch-inventory-alert" id="fetch-inventory-alert"></div>
+
+
+        <!-- User Profile Modal -->
+        <div class="profile hidden" id="profile">
+            <div class="profile-container">
+                <div id="profile-info">
+                    <div>
+                        <img id="user-icon" src="" alt="User Icon">
+                        <span id="edit-icon" class="edit-icon"><i class="fas fa-edit"></i></span>
+                    </div>
+
+                    <div class="profile-details">
+                        <p id="user-name"></p>
+                        <p id="profile-email"></p>
+                        <p id="profile-phone"></p>
+                        <p id="profile-gender"></p>
+                        <p id="profile-nationality"></p>
+                        <p id="profile-state"></p>
+                        <p id="profile-city"></p>
+                        <p id="profile-address"></p>
+                        <p><b>Role:</b> <span id="profile-role"></span></p>
+                    </div>
+                </div>
+                <div class="logout-btns">
+                    <button onclick="logOut()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Modal for profile picture upload -->
+            <div id="upload-modal" class="modalInvt">
+                <div class="modalInvt-content">
+                    <span class="closes"
+                        onclick="document.getElementById('upload-modal').style.display = 'none'">&times;</span>
+                    <h2>Upload Profile Picture</h2>
+                    <input type="file" id="profile-picture-input" accept="image/*">
+                    <button id="upload-btn">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="chat hidden" id="chat">
+        <div class="chat-container">
+            <div class="chat-header">
+                <b>Chat</b>
+                <button onclick="toggleChat()"><i class="fas fa-minus"></i></button>
+            </div>
+            <div class="chat-body">
+                <div class="lab-staffs">
+                    <h4>Lab Staffs</h4>
+                    <div class="user-list" id="user-list">
+                        <!-- User list will be populated here -->
+                    </div>
+                </div>
+
+                <div class="message-area">
+                    <div class="selected-user-info" id="selected-user-info">
+                        <img id="selected-user-pic" class="selected-user-pic" src="default-user-icon.png"
+                            alt="Selected User">
+                        <span id="selected-user-name" class="selected-user-name"></span>
+                    </div>
+                    <div id="messages">
+                        <!-- Messages will be displayed here -->
+                    </div>
+                    <div class="messaging-controllers">
+                        <textarea id="message-content" placeholder="Type your message"></textarea>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="file-input" multiple>
+                            <button id="file-upload-btn"><i class="fas fa-paperclip"></i></button>
+                        </div>
+                        <button id="send-message-btn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="staff-management-modal" class="staffsModal">
+        <div class="staffsModal-content">
+            <div class="staffsModal-header">
+                <b>Staff Management</b>
+                <div id="messagess" class="messagess hidden"></div>
+                <span class="close"
+                    onclick="document.getElementById('staff-management-modal').style.display = 'none'"><i
+                        class="fas fa-minus"></i></span>
+            </div>
+            <div class="staffsModal-body">
+                <div class="staff-list">
+                    <!-- Staff list will be populated here -->
+                </div>
+                <div class="staff-details">
+                    <!-- Staff details will be displayed here when a user is clicked -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- User tasks modal -->
+    <div id="task-container" class="hidden">
+        <h2>My Tasks</h2>
+        <div id="tasks-list"></div>
+        <h2>Completed Tasks</h2>
+        <div id="completed-tasks-list"></div>
+    </div>
+
+    <div id="logoutModal" class="logOutModal">
+        <div class="logOutModal-content">
+            <span class="close" onclick="document.getElementById('logoutModal').style.display='none'">&times;</span>
+            <p>Are you sure you want to log out?</p>
+            <div class="logout-btn">
+                <button class="yes-btn" id="confirmLogout">Yes</button>
+                <button class="cancle-btn"
+                    onclick="document.getElementById('logoutModal').style.display='none'">Cancle</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="/scripts/index.js"></script>
+    <!-- <script src="./history.js"></script> -->
+    <script src="/scripts/inventory2.js"></script>
+    <!-- <script src="/scripts/registration.js"></script> -->
+    <script src="/scripts/profile.js"></script>
+    <script src="/scripts/adminAuth.js"></script>
+    <!-- <script src="/scripts/login.js"></script> -->
+</body>
+
+</html>
