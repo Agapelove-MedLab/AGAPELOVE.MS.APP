@@ -11,8 +11,7 @@ pids/
 *.pid
 *.seed
 *.pid.lock
-uploads/
-*.uploads
+
 
 # dotenv environment variables
 .env
